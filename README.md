@@ -14,12 +14,12 @@ Valfor.js kan användas i två syften; dels för att validera att forumlärsdata
 
 Valfor.js kan också användas för att validera och formatera godtyckliga textsträngar, vilket är användbart för data som inte är standardiserad, tex. namn och adresser.
 
-## Installation
+# Installation
 ```javascript
 <script src="valfor.min.js"></script>
 ```
 
-## Exempel på använding
+# Exempel på använding
 Samtliga valideringsfunktioner returnerar inmatad data (med formatering) om datan valideras som giltig. I fall datan valideras som ogiltig returneras *false*.
 
 ### Mobiltelefonnummer
@@ -111,6 +111,19 @@ Postnummer vilka valideras som giltiga returneras formaterade. För att välja f
 1. Numeriskt (standard), `NNNNN`
 2. Nationellt, `NNN NN`
 3. Internationellt, `SE-NNN NN`
+
+**Formatering av postnummer vilka valideras som giltiga**
+```javascript
+valfor.zipcode("54100", 1); // returnerar 54100
+valfor.zipcode("54100", 2); // returnerar 541 00
+valfor.zipcode("54100", 3); // returnerar SE-541 00
+```
+**Ej giltiga postnummer (returnerar false)**
+```javascript
+valfor.zipcode("00001", 1); // returnerar false (ogiltigt värde)
+valfor.zipcode("49152", 2); // returnerar false (ogiltig nummerserie)
+valfor.zipcode("123", 3); // returnerar false (ogiltigt längd)
+```
 
 ### Bankkortsnummer
 Kontrollerar om ett bankkortsnummer är giltigt i enlighet med ISO/IEC 7812-1:2015.
