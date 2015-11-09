@@ -68,6 +68,24 @@ Personnummer vilka valideras som giltiga returneras formaterade. För att välja
 
 &ast;*Skiljetecken är antingen "-" eller "+" beroende på om födelseåret inträffade för +100 år sedan.*
 
+**Formatering på personnummer vilka valideras som giltiga**
+```javascript
+valfor.personalidnum("900101-5701", 1); // returnerar 199001015701
+valfor.personalidnum("900101-5701", 2); // returnerar 19900101-5701
+valfor.personalidnum("900101-5701", 3); // returnerar 9001015701
+valfor.personalidnum("900101-5701", 4); // returnerar 900101-5701
+valfor.personalidnum("100101+1145", 1); // returnerar 191001011145
+valfor.personalidnum("191001011145", 2); // returnerar 19100101+1145
+valfor.personalidnum("191001011145", 4); // returnerar 100101+1145
+```
+**Ej giltiga personnummer (returnerar false)**
+```javascript
+valfor.personalidnum("900101-5705", 1); // returnerar false (felaktigkontroll siffra)
+valfor.personalidnum("20900101-5701", 2); // returnerar false (ogiltig födelseår)
+valfor.personalidnum("901301-5701", 3); // returnerar false (ogiltigt födelsemånad)
+valfor.personalidnum("900132-5701", 4); // returnerar false (ogiltigt födelsedag)
+```
+
 ### Samordningsnummer
 Samordningsnummer valideras i enlighet med [Folkbokföringslagen 1991:481, § 18 ](https://www.riksdagen.se/sv/Dokument-Lagar/Lagar/Svenskforfattningssamling/sfs_sfs-1991-481/) och [SKV 707](http://www.skatteverket.se/privat/sjalvservice/blanketterbroschyrer/broschyrer/info/707.4.39f16f103821c58f680007997.html). Notera att samordningsnummer med ett angivet födelseår större än det nuvarande kalenderåret valideras som ogiltiga.
 
