@@ -55,5 +55,9 @@ valfor.cellphonenum("0710112233"); // returnerar false
 valfor.cellphonenum("07021122"); // returnerar false
 valfor.cellphonenum("0812345678"); // returnerar false
 ```
+
+### Personnummer
+Personnummer valideras i enlighet med [Folkbokföringslagen 1991:481 (18§)](https://www.riksdagen.se/sv/Dokument-Lagar/Lagar/Svenskforfattningssamling/sfs_sfs-1991-481/) och [SKV 704](http://www.skatteverket.se/privat/sjalvservice/blanketterbroschyrer/broschyrer/info/704.4.39f16f103821c58f680007993.html).
+
 ## Licens
 Valfor.js omfattas av licensformen [MIT](https://opensource.org/licenses/MIT "The MIT License"). Varsågod!
