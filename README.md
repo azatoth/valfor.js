@@ -106,6 +106,12 @@ valfor.orgidnum("0812345678"); // returnerar false
 ### Postnummer
 Postnummer valideras i enlighet med [SS 613401:2011](http://www.sis.se/sociologi-service-f%C3%B6retagsorganisation-och-ledning-och-administration/postala-tj%C3%A4nster/ss-6134012011) och det [Svenska Postnummersystemet](http://www.postnummerservice.se/information/faq/adresser-och-postnummer/hur-aer-postnummer-uppbyggda-i-sverige).
 
+Postnummer vilka valideras som giltiga returneras formaterade. För att välja format på datan som returneras anges en sekundär parameter med värde 1 till 3. De format som stöds är:
+
+1. Numeriskt (standard), *NNNNN*
+2. Nationellt, *NNN NN*
+3. Internationellt, *SE-NNN NN*
+
 ### Bankkortsnummer
 Kontrollerar om ett bankkortsnummer är giltigt i enlighet med ISO/IEC 7812-1:2015.
 
