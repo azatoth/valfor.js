@@ -20,12 +20,33 @@ Valfor.js kan också användas för att validera och formatera godtyckliga texts
 ```
 
 ## Exempel på använding
-Samtliga valideringsfunktioner returnerar 
+Samtliga valideringsfunktioner returnerar inmatad data (med formatering) om datan valideras som giltig. I fall datan valideras som ogiltig returneras *false*.
 
 ### Mobiltelefonnummer
-Mobiltelefonnummer valideras enligt [Post- & Telestyrelsens nummerplan](https://www.pts.se/sv/Bransch/Telefoni/Nummerfragor/Telefoninummerplanen/Telefoninummerplanens-disposition/) för mobiltelefonitjänster.
+Mobiltelefonnummer valideras enligt [Post- & Telestyrelsens nummerplan](https://www.pts.se/sv/Bransch/Telefoni/Nummerfragor/Telefoninummerplanen/Telefoninummerplanens-disposition/) för mobiltelefonitjänster. De svenska mobiltelefonitjänsterna inleds med prefixen *70*, *72*, *73*, *76* och *79*.
+
+Mobiltelefonnummer som valideras som giltiga returneras formaterade. De format som stöd är:
+
+1. Numeriskt format (standard), *NNNNNNNNNN*
+2. Internationellt format E.164, *+46NNNNNNNNN*
+3. Nationellt format, *NNN-NNN NN NN*
+
 ```javascript
-console.log( valfor.cellphonenum("0702-112233") );
+valfor.cellphonenum("0702112233"); // returnerar 0702112233
+valfor.cellphonenum("+460702112233"); // returnerar 0702112233
+valfor.cellphonenum("070-211 22 33"); // returnerar 0702112233
+```
+
+```javascript
+valfor.cellphonenum("0702112233", 2); // returnerar +46702112233
+valfor.cellphonenum("+460702112233", 2); // returnerar +46702112233
+valfor.cellphonenum("070-211 22 33", 2); // returnerar +46702112233
+```
+
+```javascript
+valfor.cellphonenum("0702112233", 3); // returnerar 070-211 22 33
+valfor.cellphonenum("+460702112233", 3); // returnerar 070-211 22 33
+valfor.cellphonenum("070-211 22 33", 3); // returnerar 070-211 22 33
 ```
 
 ## Licens
