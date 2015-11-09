@@ -4,8 +4,8 @@ Valfor.js är ett bibliotek för att validera och formatera formulärsdata. Bibl
 ## Användningsområden
 Valfor.js kan användas i två syften; dels för att validera att forumlärsdata är giltig (korrekt) samt för att formatera datan i ett standardenligt format. Valfor.js har stöd för att validera följande typer av inmatad data:
 
-* Mobiltelefonnummer
-* Personnummer
+* [Mobiltelefonnummer](https://github.com/jop-io/valfor.js/blob/master/README.md#mobiltelefonnummer)
+* [Personnummer](https://github.com/jop-io/valfor.js/blob/master/README.md#personnummer)
 * Samordningsnummer
 * Organisationsnummer
 * Postnummer
