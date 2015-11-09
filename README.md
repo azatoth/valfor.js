@@ -20,7 +20,13 @@ Valfor.js kan också användas för att validera och formatera godtyckliga texts
 ```
 
 ## Exempel på använding
-asd
+Samtliga valideringsfunktioner returnerar 
+
+### Mobiltelefonnummer
+Mobiltelefonnummer valideras enligt [Post- & Telestyrelsens nummerplan](https://www.pts.se/sv/Bransch/Telefoni/Nummerfragor/Telefoninummerplanen/Telefoninummerplanens-disposition/) för mobiltelefonitjänster.
+```javascript
+console.log( valfor.cellphonenum("0702-112233") );
+```
 
 ## Licens
 Valfor.js omfattas av licensformen [MIT](https://opensource.org/licenses/MIT "The MIT License"). Varsågod!
