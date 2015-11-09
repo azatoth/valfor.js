@@ -31,25 +31,25 @@ Mobiltelefonnummer som valideras som giltiga returneras formaterade. F√∂r att v√
 2. Internationellt format E.164, *+46NNNNNNNNN*
 3. Nationellt format, *NNN-NNN NN NN*
 
-**Validering med numerisk formatering**
+**Numerisk formatering**
 ```javascript
 valfor.cellphonenum("0702112233"); // returnerar 0702112233
 valfor.cellphonenum("+460702112233"); // returnerar 0702112233
 valfor.cellphonenum("070-211 22 33"); // returnerar 0702112233
 ```
-**Validering med internationell formatering**
+**Internationell formatering**
 ```javascript
 valfor.cellphonenum("0702112233", 2); // returnerar +46702112233
 valfor.cellphonenum("+460702112233", 2); // returnerar +46702112233
 valfor.cellphonenum("070-211 22 33", 2); // returnerar +46702112233
 ```
-**Validering med nationell formatering**
+**Nationell formatering**
 ```javascript
 valfor.cellphonenum("0702112233", 3); // returnerar 070-211 22 33
 valfor.cellphonenum("+460702112233", 3); // returnerar 070-211 22 33
 valfor.cellphonenum("070-211 22 33", 3); // returnerar 070-211 22 33
 ```
-**Validering av ej giltiga telefonnummer**
+**Ej giltiga telefonnummer (returnerar false)**
 ```javascript
 valfor.cellphonenum("0710112233"); // returnerar false
 valfor.cellphonenum("07021122"); // returnerar false
