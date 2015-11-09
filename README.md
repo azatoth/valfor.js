@@ -1,2 +1,5 @@
 # valfor.js
-Bibliotek för att validera och formatera formulärdata. Biblioteket är särskilt behjälpligt för att validera kundforumlär, tex. kassor på e-handelssidor.
+Valfor.js är ett bibliotek för att validera och formatera formulärsdata. Biblioteket är särskilt behjälpligt för att validera kundforumlär, tex. i kassan på en e-handelssida.
+
+## Användningsområden
+* Kalle
