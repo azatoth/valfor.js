@@ -14,5 +14,13 @@ Valfor.js kan användas i två syften; dels för att validera att forumlärsdata
 
 Valfor.js kan också användas för att validera och formatera godtyckliga textsträngar, vilket är användbart för data som inte är standardiserad, tex. namn och adresser.
 
+## Installation
+```javascript
+<script src="valfor.min.js"></script>
+```
+
+## Exempel på använding
+asd
+
 ## Licens
 Valfor.js omfattas av licensformen [MIT](https://opensource.org/licenses/MIT "The MIT License"). Varsågod!
