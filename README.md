@@ -80,7 +80,7 @@ valfor.personalidnum("191001011145", 4); // returnerar 100101+1145
 ```
 **Ej giltiga personnummer (returnerar false)**
 ```javascript
-valfor.personalidnum("900101-5705", 1); // returnerar false (felaktigkontroll siffra)
+valfor.personalidnum("900101-5705", 1); // returnerar false (felaktig kontrollsiffra)
 valfor.personalidnum("20900101-5701", 2); // returnerar false (ogiltig födelseår)
 valfor.personalidnum("901301-5701", 3); // returnerar false (ogiltigt födelsemånad)
 valfor.personalidnum("900132-5701", 4); // returnerar false (ogiltigt födelsedag)
