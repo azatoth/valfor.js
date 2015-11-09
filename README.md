@@ -1,4 +1,4 @@
-# valfor.js
+# valfor.js (v0.9)
 Valfor.js är ett bibliotek för att validera och formatera formulärsdata. Biblioteket är särskilt behjälpligt för att hantera forumlär där kunder anger data i en köpprocess, tex. i kassan på en e-handelssida.
 
 ## Användningsområden
@@ -25,7 +25,7 @@ Samtliga valideringsfunktioner returnerar inmatad data (med formatering) om data
 ### Mobiltelefonnummer
 Mobiltelefonnummer valideras enligt [Post- & Telestyrelsens nummerplan](https://www.pts.se/sv/Bransch/Telefoni/Nummerfragor/Telefoninummerplanen/Telefoninummerplanens-disposition/) för mobiltelefonitjänster. De svenska mobiltelefonitjänsterna inleds med prefixen *70*, *72*, *73*, *76* och *79*.
 
-Mobiltelefonnummer som valideras som giltiga returneras formaterade. För att välja format på datan som returneras anges en sekundär parameter med värde 1 till 3. De format som stöds är:
+Mobiltelefonnummer vilka valideras som giltiga returneras formaterade. För att välja format på datan som returneras anges en sekundär parameter med värde 1 till 3. De format som stöds är:
 
 1. Numeriskt format (standard), *NNNNNNNNNN*
 2. Internationellt format E.164, *+46NNNNNNNNN*
@@ -59,11 +59,31 @@ valfor.cellphonenum("0812345678"); // returnerar false
 ### Personnummer
 Personnummer valideras i enlighet med [Folkbokföringslagen 1991:481, § 18 ](https://www.riksdagen.se/sv/Dokument-Lagar/Lagar/Svenskforfattningssamling/sfs_sfs-1991-481/) och [SKV 704](http://www.skatteverket.se/privat/sjalvservice/blanketterbroschyrer/broschyrer/info/704.4.39f16f103821c58f680007993.html). Notera att personnummer med ett angivet födelseår större än det nuvarande kalenderåret valideras som ogiltiga.
 
+Personnummer vilka valideras som giltiga returneras formaterade. För att välja format på datan som returneras anges en sekundär parameter med värde 1 till 4. De format som stöds är:
+
+1. 12 siffror (standard), *ÅÅÅÅMMDDNNNN*
+2. 12 siffror med skiljetecken&ast;, *ÅÅÅÅMMDD-NNNN*
+3. 10 siffror, *ÅÅMMDDNNNN*
+4. 10 siffror med skiljetecken&ast;, *ÅÅMMDD-NNNN*
+
+&ast;*Skiljetecken är antingen "-" eller "+" beroende på om födelseåret inträffade för +100 år sedan.*
+
 ### Samordningsnummer
 Samordningsnummer valideras i enlighet med [Folkbokföringslagen 1991:481, § 18 ](https://www.riksdagen.se/sv/Dokument-Lagar/Lagar/Svenskforfattningssamling/sfs_sfs-1991-481/) och [SKV 707](http://www.skatteverket.se/privat/sjalvservice/blanketterbroschyrer/broschyrer/info/707.4.39f16f103821c58f680007997.html). Notera att samordningsnummer med ett angivet födelseår större än det nuvarande kalenderåret valideras som ogiltiga.
 
 ### Organisationsnummer
 Organisationsnummer valideras i enlighet med [Lagen om identitetsbeteckning för juridiska personer (1974:174)](https://www.riksdagen.se/sv/Dokument-Lagar/Lagar/Svenskforfattningssamling/sfs_sfs-1974-174/) och [SKV 709](https://www.skatteverket.se/foretagorganisationer/sjalvservice/blanketterbroschyrer/broschyrer/info/709.4.39f16f103821c58f680008001.html).
+
+Organisationsnummer vilka valideras som giltiga returneras formaterade. För att välja format på datan som returneras anges en sekundär parameter med värde 1 till 2. De format som stöds är:
+
+1. 10 siffror (standard), *NNNNNNNNNN*
+2. 10 siffror med skiljetecken, *NNNNNN-NNNN*
+
+```javascript
+valfor.orgidnum("0710112233"); // returnerar false
+valfor.orgidnum("07021122"); // returnerar false
+valfor.orgidnum("0812345678"); // returnerar false
+```
 
 ### Postnummer
 Postnummer valideras i enlighet med [SS 613401:2011](http://www.sis.se/sociologi-service-f%C3%B6retagsorganisation-och-ledning-och-administration/postala-tj%C3%A4nster/ss-6134012011) och det [Svenska Postnummersystemet](http://www.postnummerservice.se/information/faq/adresser-och-postnummer/hur-aer-postnummer-uppbyggda-i-sverige).
