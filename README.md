@@ -9,8 +9,8 @@ Valfor.js kan användas i två syften; dels för att validera att forumlärsdata
 * [Samordningsnummer](https://github.com/jop-io/valfor.js/blob/master/README.md#samordningsnummer)
 * [Organisationsnummer](https://github.com/jop-io/valfor.js/blob/master/README.md#organisationsnummer)
 * [Postnummer](https://github.com/jop-io/valfor.js/blob/master/README.md#postnummer)
-* Bankkortsnummer
-* E-postadresser
+* [Bankkortsnummer](https://github.com/jop-io/valfor.js/blob/master/README.md#bankkortsnummer)
+* [E-postadresser](https://github.com/jop-io/valfor.js/blob/master/README.md#e-postadress)
 
 Valfor.js kan också användas för att validera och formatera godtyckliga textsträngar, vilket är användbart för data som inte är standardiserad, tex. namn och adresser.
 
