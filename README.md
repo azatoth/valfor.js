@@ -27,9 +27,9 @@ Mobiltelefonnummer valideras enligt [Post- & Telestyrelsens nummerplan](https://
 
 Mobiltelefonnummer vilka valideras som giltiga returneras formaterade. För att välja format på datan som returneras anges en sekundär parameter med värde 1 till 3. De format som stöds är:
 
-1. Numeriskt format (standard), *NNNNNNNNNN*
-2. Internationellt format E.164, *+46NNNNNNNNN*
-3. Nationellt format, *NNN-NNN NN NN*
+1. Numeriskt (standard), `NNNNNNNNNN`
+2. Internationellt E.164, `+46NNNNNNNNN`
+3. Nationellt, *NNN-NNN NN NN*
 
 **Numerisk formatering**
 ```javascript
