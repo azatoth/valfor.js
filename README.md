@@ -6,9 +6,9 @@ Valfor.js kan användas i två syften; dels för att validera att forumlärsdata
 
 * [Mobiltelefonnummer](https://github.com/jop-io/valfor.js/blob/master/README.md#mobiltelefonnummer)
 * [Personnummer](https://github.com/jop-io/valfor.js/blob/master/README.md#personnummer)
-* Samordningsnummer
-* Organisationsnummer
-* Postnummer
+* [Samordningsnummer](https://github.com/jop-io/valfor.js/blob/master/README.md#samordningsnummer)
+* [Organisationsnummer](https://github.com/jop-io/valfor.js/blob/master/README.md#organisationsnummer)
+* [Postnummer](https://github.com/jop-io/valfor.js/blob/master/README.md#postnummer)
 * Bankkortsnummer
 * E-postadresser
 
