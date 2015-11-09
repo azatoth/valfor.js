@@ -68,7 +68,14 @@ Organisationsnummer valideras i enlighet med [Lagen om identitetsbeteckning för
 ### Postnummer
 Postnummer valideras i enlighet med [SS 613401:2011](http://www.sis.se/sociologi-service-f%C3%B6retagsorganisation-och-ledning-och-administration/postala-tj%C3%A4nster/ss-6134012011) och det [Svenska Postnummersystemet](http://www.postnummerservice.se/information/faq/adresser-och-postnummer/hur-aer-postnummer-uppbyggda-i-sverige).
 
+### Bankkortsnummer
+Kontrollerar om ett bankkortsnummer är giltigt i enlighet med ISO/IEC 7812-1:2015.
 
+### E-postadress
+asd
+
+### Text
+asd
 
 ## Licens
 Valfor.js omfattas av licensformen [MIT](https://opensource.org/licenses/MIT "The MIT License"). Varsågod!
