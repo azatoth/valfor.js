@@ -29,7 +29,7 @@ Mobiltelefonnummer vilka valideras som giltiga returneras formaterade. För att 
 
 1. Numeriskt (standard), `NNNNNNNNNN`
 2. Internationellt E.164, `+46NNNNNNNNN`
-3. Nationellt, *NNN-NNN NN NN*
+3. Nationellt, `NNN-NNN NN NN`
 
 **Numerisk formatering**
 ```javascript
@@ -61,10 +61,10 @@ Personnummer valideras i enlighet med [Folkbokföringslagen 1991:481, § 18 ](ht
 
 Personnummer vilka valideras som giltiga returneras formaterade. För att välja format på datan som returneras anges en sekundär parameter med värde 1 till 4. De format som stöds är:
 
-1. 12 siffror (standard), *ÅÅÅÅMMDDNNNN*
-2. 12 siffror med skiljetecken&ast;, *ÅÅÅÅMMDD-NNNN*
-3. 10 siffror, *ÅÅMMDDNNNN*
-4. 10 siffror med skiljetecken&ast;, *ÅÅMMDD-NNNN*
+1. 12 siffror (standard), `ÅÅÅÅMMDDNNNN`
+2. 12 siffror med skiljetecken&ast;, `ÅÅÅÅMMDD-NNNN`
+3. 10 siffror, `ÅÅMMDDNNNN`
+4. 10 siffror med skiljetecken&ast;, `ÅÅMMDD-NNNN`
 
 &ast;*Skiljetecken är antingen "-" eller "+" beroende på om födelseåret inträffade för +100 år sedan.*
 
@@ -94,8 +94,8 @@ Organisationsnummer valideras i enlighet med [Lagen om identitetsbeteckning för
 
 Organisationsnummer vilka valideras som giltiga returneras formaterade. För att välja format på datan som returneras anges en sekundär parameter med värde 1 till 2. De format som stöds är:
 
-1. 10 siffror (standard), *NNNNNNNNNN*
-2. 10 siffror med skiljetecken, *NNNNNN-NNNN*
+1. 10 siffror (standard), `NNNNNNNNNN`
+2. 10 siffror med skiljetecken, `NNNNNN-NNNN`
 
 ```javascript
 valfor.orgidnum("0710112233"); // returnerar false
@@ -108,9 +108,9 @@ Postnummer valideras i enlighet med [SS 613401:2011](http://www.sis.se/sociologi
 
 Postnummer vilka valideras som giltiga returneras formaterade. För att välja format på datan som returneras anges en sekundär parameter med värde 1 till 3. De format som stöds är:
 
-1. Numeriskt (standard), *NNNNN*
-2. Nationellt, *NNN NN*
-3. Internationellt, *SE-NNN NN*
+1. Numeriskt (standard), `NNNNN`
+2. Nationellt, `NNN NN`
+3. Internationellt, `SE-NNN NN`
 
 ### Bankkortsnummer
 Kontrollerar om ett bankkortsnummer är giltigt i enlighet med ISO/IEC 7812-1:2015.
