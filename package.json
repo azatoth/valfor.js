@@ -22,6 +22,7 @@
   "dependencies": {},
   "devDependencies": {
     "browserify": "^12.0.1",
+    "chai": "^3.4.1",
     "gulp": "^3.9.0",
     "gulp-bump": "^1.0.0",
     "gulp-jshint": "^2.0.0",
@@ -31,6 +32,8 @@
     "gulp-util": "^3.0.7",
     "jshint": "^2.8.0",
     "jshint-stylish": "^2.1.0",
+    "mocha": "^2.3.4",
+    "timekeeper": "0.0.5",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   }
