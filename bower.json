@@ -1,0 +1,22 @@
+{
+  "name": "valfor.js",
+  "main": "valfor.min.js",
+  "version": "0.9.1",
+  "homepage": "https://github.com/jop-io/valfor.js",
+  "authors": [
+    "Jonas Persson",
+    "Carl Fürstenberg <azatoth@gmail.com>"
+  ],
+  "moduleType": [
+    "globals",
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
