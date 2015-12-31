@@ -1,3 +1,14 @@
+var DEFAULT = 0,
+  NUMERICAL_FORMAT = 1,
+  INTERNATIONAL_FORMAT = 2,
+  NATIONAL_FORMAT = 4,
+  NBR_DIGITS_10 = 8,
+  NBR_DIGITS_12 = 16,
+  ADD_SEPARATOR = 32,
+  SPACE_SEPARATOR = 64,
+  DASH_SEPARATOR = 128,
+  LOWERCASE = 256,
+  UPPERCASE = 512;
 /**
  * Kontrollerar om ett svenskt mobiltelefonnummer är giltigt i enlighet med
  * Post- & Telestyrelsens nummerplan för mobiltelefonitjänster.
@@ -5,9 +16,9 @@
  * För att retunera mobiltelefonnumret i ett visst format, kan en andra
  * valfri parameter anges. De format som stöds är:
  *
- *     1 = Numeriskt format (standard), NNNNNNNNNN
- *     2 = Internationellt format E.164, +46NNNNNNNNN
- *     3 = Nationellt format, NNN-NNN NN NN
+ *     NUMERICAL_FORMAT = Numeriskt format (standard), NNNNNNNNNN
+ *     INTERNATIONAL_FORMAT = Internationellt format E.164, +46NNNNNNNNN
+ *     NATIONAL_FORMAT = Nationellt format, NNN-NNN NN NN
  *
  * @param {String} number Mobiltelefonnummer
  * @param {Int} format Önskat format (1-3)
@@ -19,7 +30,7 @@ function cellphonenum(number, format) {
     for (var p in prefix) {
       if (n.indexOf(prefix[p]) > -1 && n.substring(n.indexOf(prefix[p]), n.length)
         .length === 9) {
-        if (format === 3) {
+        if (format & NATIONAL_FORMAT) {
           var fn = '0',
             pdx = n.indexOf(prefix[p]);
           for (var i = pdx; i <= pdx + 8; i++) {
@@ -27,7 +38,7 @@ function cellphonenum(number, format) {
           }
           return fn;
         }
-        return (format === 2 ? '+46' : '0') + n.substring(n.indexOf(prefix[p]), n.length);
+        return (format & INTERNATIONAL_FORMAT ? '+46' : '0') + n.substring(n.indexOf(prefix[p]), n.length);
       }
     }
     return false;
@@ -39,13 +50,12 @@ function cellphonenum(number, format) {
    * För att retunera person- eller samordningsnumret i ett visst format,
    * kan en andra valfri parameter anges. De format som stöds är:
    *
-   *     1 = 12 siffror utan skiljetecken (standard), ÅÅÅÅMMDDNNNN
-   *     2 = 12 siffror med skiljetecken, ÅÅÅÅMMDD-NNNN
-   *     3 = 10 siffror utan skiljetecken, ÅÅMMDDNNNN
-   *     4 = 10 siffror med skiljetecken, ÅÅMMDD-NNNN
+   *     ADD_SEPARATOR - Lägg till skiljetecken (-)
+   *     NBR_DIGITS_12 = 12 siffror (standard), ÅÅÅÅMMDDNNNN
+   *     NBR_DIGITS_10 = 10 siffrorÅÅMMDDNNNN
    *
    * @param {String} number Person- eller samordningnummer
-   * @param {Int} format Önskat format (1-4)
+   * @param {Int} format Önskat format, (ADD_SEPARATOR | (NBR_DIGITS_12,NBR_DIGITS_10))
    * @returns {String|Boolean} Person-/samordningnummer eller 'false'
    */
 
@@ -94,10 +104,10 @@ function personalidnum(number, format) {
         .substr(0, 1), 10) + parseInt(s.toString()
         .substr(1, 1), 10) : s);
     }
-    if (format === 2 || format === 4) {
-      onum = (format === 2 ? cnum.substr(0, 8) : cnum.substr(2, 6)) + (number.substr(-5, 1) === '+' ? '+' : '-') + cnum.substr(-4);
+    if (format & ADD_SEPARATOR) {
+      onum = (format & NBR_DIGITS_12 ? cnum.substr(0, 8) : cnum.substr(2, 6)) + (number.substr(-5, 1) === '+' ? '+' : '-') + cnum.substr(-4);
     } else {
-      onum = (format === 3 ? cnum.substr(2) : cnum);
+      onum = (format & NBR_DIGITS_10 ? cnum.substr(2) : cnum);
     }
     return (lsum % 10 !== 0 ? false : onum);
   }
@@ -108,11 +118,10 @@ function personalidnum(number, format) {
    * För att retunera organisationsnumret i ett visst format, kan en andra
    * valfri parameter anges. De format som stöds är:
    *
-   *     1 = 10 siffror utan skiljetecken (standard), NNNNNNNNNN
-   *     2 = 10 siffror med skiljetecken, NNNNNN-NNNN
+   *     ADD_SEPARATOR = Lägg till siljetecken (-)
    *
    * @param {String} number Organisationsnumret som ska kontrolleras
-   * @param {Int} format 1=10 siffror numeriskt (standard), 2=10 siffror formaterat
+   * @param {Int} format (ADD_SEPARATOR)
    * @returns {String|Boolean} Returnerar personnumret eller 'false'
    */
 
@@ -129,7 +138,7 @@ function orgidnum(number, format) {
         .substr(0, 1), 10) + parseInt(s.toString()
         .substr(1, 1), 10) : s);
     }
-    return (lsum % 10 !== 0 ? false : (format === 2 ? n.substr(0, 6) + '-' + n.substr(-4) : n));
+    return (lsum % 10 !== 0 ? false : (format & ADD_SEPARATOR ? n.substr(0, 6) + '-' + n.substr(-4) : n));
   }
   /**
    * Kontrollerar om ett bankkortsnummer är giltigt i enlighet med ISO/IEC
@@ -138,12 +147,12 @@ function orgidnum(number, format) {
    * För att retunera bankkortsnumret i ett visst format, kan en andra valfri
    * parameter anges. De format som stöds är:
    *
-   *     1 = Bankkortsnummer utan skiljetecken (standard), NNNNNNNNNNNNNNNN
-   *     2 = Bankkortsnummer med ' ' som skiljetecken, NNNN NNNN NNNN NNNN
-   *     3 = Bankkortsnummer med '-' som skiljetecken, NNNN-NNNN-NNNN-NNNN
+   *     DEFAULT = Bankkortsnummer utan skiljetecken (standard), NNNNNNNNNNNNNNNN
+   *     SPACE_SEPARATOR = Bankkortsnummer med ' ' som skiljetecken, NNNN NNNN NNNN NNNN
+   *     DASH_SEPARATOR = Bankkortsnummer med '-' som skiljetecken, NNNN-NNNN-NNNN-NNNN
    *
    * @param {String} number Bankkortsnummer
-   * @param {Int} format Önskat format (1-3)
+   * @param {Int} format Önskat format (DEFAULT,SPACE_SEPARATOR,DASH_SEPARATOR)
    * @returns {String|Boolean} Bankkortsnumert eller 'false'
    */
 
@@ -160,8 +169,8 @@ function bankcardnum(number, format) {
       .substr(0, 1), 10) + parseInt(s.toString()
       .substr(1, 1), 10) : s);
   }
-  if (format === 2 || format === 3) {
-    nsep = (format === 2 ? ' ' : '-');
+  if (format & SPACE_SEPARATOR || format & DASH_SEPARATOR) {
+    nsep = (format & SPACE_SEPARATOR ? ' ' : '-');
     while (n.length > 0) {
       onum += n.substr(0, 4) + nsep;
       n = n.substr(4);
@@ -180,12 +189,12 @@ function bankcardnum(number, format) {
  * För att retunera postnumret i ett visst format, kan en andra valfri
  * parameter anges. De format som stöds är:
  *
- *     1 = Numeriskt format (standard), NNNNN
- *     2 = Nationellt format, NNN NN
- *     3 = Internationellt format, SE-NNN NN
+ *     NUMERICAL_FORMAT = Numeriskt format (standard), NNNNN
+ *     NATIONAL_FORMAT = Nationellt format, NNN NN
+ *     INTERNATIONAL_FORMAT = Internationellt format, SE-NNN NN
  *
  * @param {String} number Postnummer
- * @param {Int} format Önskat format (1-3)
+ * @param {Int} format Önskat format (NUMERICAL_FORMAT,NATIONAL_FORMAT,INTERNATIONAL_FORMAT)
  * @returns {String|Boolean} Postnumret eller 'false'
  */
 function zipcode(number, format) {
@@ -195,7 +204,7 @@ function zipcode(number, format) {
     if (n.length !== 5 || pn < 10000 || pn > 99000 || pfx.indexOf(n.substr(0, 2)) > -1) {
       return false;
     }
-    return (format === 2 ? n.substr(0, 3) + ' ' + n.substr(-2) : (format === 3 ? 'SE-' + n.substr(0, 3) + ' ' + n.substr(-2) : n));
+    return (format & NATIONAL_FORMAT ? n.substr(0, 3) + ' ' + n.substr(-2) : (format & INTERNATIONAL_FORMAT ? 'SE-' + n.substr(0, 3) + ' ' + n.substr(-2) : n));
   }
   /**
    * Kontrollerar om en e-postadress är giltig enligt mönstret *@*.*. Maximal
@@ -204,18 +213,18 @@ function zipcode(number, format) {
    * För att retunera e-postadressen i ett visst format, kan en andra valfri
    * parameter anges. De format som stöds är:
    *
-   *     1 = Oförändrad, samma som inmatad e-postadress (standard)
-   *     2 = VERSAL E-POSTADRESS
-   *     3 = gemen e-postadress
+   *     DEFAULT = Oförändrad, samma som inmatad e-postadress (standard)
+   *     UPPERCASE = VERSAL E-POSTADRESS
+   *     LOWERCASE = gemen e-postadress
    *
    * @param {String} email E-postadress
-   * @param {Int} format Önskat format (1-3)
+   * @param {Int} format Önskat format (DEFAULT,UPPERCASE,LOWERCASE)
    * @returns {String|Boolean} E-postadress eller 'false'
    */
 
 function testEmail(email, format) {
     var e = !!(/\S+@\S+\.\S+/.test(email) && email.indexOf('@') === email.lastIndexOf('@') && email.length < 255);
-    email = (format === 2 ? email.toUpperCase() : (format === 3 ? email.toLowerCase() : email))
+    email = (format & UPPERCASE ? email.toUpperCase() : (format & LOWERCASE ? email.toLowerCase() : email))
       .replace(/^\s+|\s+$/gm, '');
     return (e ? email : false);
   }
@@ -224,9 +233,9 @@ function testEmail(email, format) {
    *
    * Format:
    *
-   *     1 = Oförändrad, samma som inmatad text (standard)
-   *     2 = VERSAL TEXT
-   *     3 = gemen text
+   *     DEFAULT = Oförändrad, samma som inmatad text (standard)
+   *     UPPERCASE = VERSAL TEXT
+   *     LOWERCASE = gemen text
    *
    * Typer:
    *
@@ -239,7 +248,7 @@ function testEmail(email, format) {
    *
    * @param {String} text Textsträng
    * @param {String} type Valideringstyp
-   * @param {Int} format Önskat format (1-3)
+   * @param {Int} format Önskat format (DEFAULT,UPPERCASE,LOWERCASE)
    * @param {Int} min Minimal tillåten längd
    * @param {Int} max Maximal tillåten längd
    * @returns {String|Boolean} Returnerar textsträng eller 'false'
@@ -285,7 +294,7 @@ function testText(text, type, format, min, max) {
   } else if (type === 'ALPHANUM' && /[^\w]/i.test(text)) {
     return false;
   }
-  return (text.length === 0 ? true : (format === 3 ? text.toLowerCase() : (format === 2 ? text.toUpperCase() : text)));
+  return (text.length === 0 ? true : (format & LOWERCASE ? text.toLowerCase() : (format & UPPERCASE ? text.toUpperCase() : text)));
 }
 
 module.exports = {
@@ -295,5 +304,16 @@ module.exports = {
   bankcardnum: bankcardnum,
   zipcode: zipcode,
   email: testEmail,
-  text: testText
+  text: testText,
+  DEFAULT: DEFAULT,
+  NUMERICAL_FORMAT: NUMERICAL_FORMAT,
+  INTERNATIONAL_FORMAT: INTERNATIONAL_FORMAT,
+  NATIONAL_FORMAT: NATIONAL_FORMAT,
+  NBR_DIGITS_10: NBR_DIGITS_10,
+  NBR_DIGITS_12: NBR_DIGITS_12,
+  ADD_SEPARATOR: ADD_SEPARATOR,
+  SPACE_SEPARATOR: SPACE_SEPARATOR,
+  DASH_SEPARATOR: DASH_SEPARATOR,
+  LOWERCASE: LOWERCASE,
+  UPPERCASE: UPPERCASE
 };
