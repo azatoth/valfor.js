@@ -52,7 +52,7 @@ function cellphonenum(number, format) {
    *
    *     ADD_SEPARATOR - Lägg till skiljetecken (-)
    *     NBR_DIGITS_12 = 12 siffror (standard), ÅÅÅÅMMDDNNNN
-   *     NBR_DIGITS_10 = 10 siffrorÅÅMMDDNNNN
+   *     NBR_DIGITS_10 = 10 siffror, ÅÅMMDDNNNN
    *
    * @param {String} number Person- eller samordningnummer
    * @param {Int} format Önskat format, (ADD_SEPARATOR | (NBR_DIGITS_12,NBR_DIGITS_10))
@@ -119,9 +119,11 @@ function personalidnum(number, format) {
    * valfri parameter anges. De format som stöds är:
    *
    *     ADD_SEPARATOR = Lägg till siljetecken (-)
+   *     NBR_DIGITS_12 = 12 siffror, ÅÅÅÅMMDDNNNN
+   *     NBR_DIGITS_10 = 10 siffror (standard), ÅÅMMDDNNNN
    *
    * @param {String} number Organisationsnumret som ska kontrolleras
-   * @param {Int} format (ADD_SEPARATOR)
+   * @param {Int} format (ADD_SEPARATOR| (NBR_DIGITS_10,NBR_DIGITS_12))
    * @returns {String|Boolean} Returnerar personnumret eller 'false'
    */
 
@@ -129,6 +131,15 @@ function orgidnum(number, format) {
     var n = number.replace(/\D/g, ''),
       lsum = 0,
       i, s;
+
+    // 16NNNNNNNNNN används för lagring inom skatteverket
+    if (n.length === 12 && parseInt(n.substr(0, 1)) !== 16) {
+      if (parseInt(n.substr(0, 1)) !== 16) {
+        return false;
+      }
+      n = n.substr(2);
+    }
+
     if (n.length !== 10 || parseInt(n.substr(2, 1)) < 2) {
       return false;
     }
@@ -138,7 +149,7 @@ function orgidnum(number, format) {
         .substr(0, 1), 10) + parseInt(s.toString()
         .substr(1, 1), 10) : s);
     }
-    return (lsum % 10 !== 0 ? false : (format & ADD_SEPARATOR ? n.substr(0, 6) + '-' + n.substr(-4) : n));
+    return (lsum % 10 !== 0 ? false : (format & NBR_DIGITS_12 ? '16' : '') + (format & ADD_SEPARATOR ? n.substr(0, 6) + '-' + n.substr(-4) : n));
   }
   /**
    * Kontrollerar om ett bankkortsnummer är giltigt i enlighet med ISO/IEC
