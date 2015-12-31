@@ -64,7 +64,14 @@ function personalidnum(number, format) {
     if (!(n.length === 12 || n.length === 10)) {
       return false;
     }
-    var nums = [n.substr(0, (n.length === 10 ? 2 : 4)), n.substr(-8, 2), n.substr(-6, 2), n.substr(-4, 3), n.substr(-1, 1)],
+
+    var nums = [
+        n.substr(0, (n.length === 10 ? 2 : 4)), // year
+        n.substr(-8, 2), // month
+        n.substr(-6, 2), // day
+        n.substr(-4, 3), // number
+        n.substr(-1, 1) // control number
+      ],
       year = new Date()
       .getFullYear();
     if (nums[0].length === 2) {
@@ -105,7 +112,7 @@ function personalidnum(number, format) {
         .substr(1, 1), 10) : s);
     }
     if (format & ADD_SEPARATOR) {
-      onum = (format & NBR_DIGITS_12 ? cnum.substr(0, 8) : cnum.substr(2, 6)) + (number.substr(-5, 1) === '+' ? '+' : '-') + cnum.substr(-4);
+      onum = (format & NBR_DIGITS_12 ? cnum.substr(0, 8) : cnum.substr(2, 6)) + (year - ctrl[0] >= 100 ? '+' : '-') + cnum.substr(-4);
     } else {
       onum = (format & NBR_DIGITS_10 ? cnum.substr(2) : cnum);
     }

@@ -88,6 +88,8 @@ describe('valfor', function () {
       .should.equal('9001015701');
     valfor.personalidnum('900101-5701', valfor.NBR_DIGITS_10 | valfor.ADD_SEPARATOR)
       .should.equal('900101-5701');
+    valfor.personalidnum('160101+1149', valfor.NBR_DIGITS_12)
+      .should.equal('181601011149');
     valfor.personalidnum('100101+1145', valfor.NBR_DIGITS_12)
       .should.equal('191001011145');
     valfor.personalidnum('191001011145', valfor.NBR_DIGITS_12 | valfor.ADD_SEPARATOR)
