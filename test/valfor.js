@@ -77,6 +77,13 @@ describe('valfor', function () {
       .should.equal(false);
     valfor.cellphonenum('0812345678')
       .should.equal(false);
+    });
+
+  it('should calculate correct control number', function(){
+    valfor.calculate_luhn('900101570').should.equal(1);
+    valfor.calculate_luhn('160101114').should.equal(9);
+    valfor.calculate_luhn('100101114').should.equal(5);
+    valfor.calculate_luhn('555555555').should.equal(5);
   });
 
   it('should process personal id numbers', function () {
@@ -96,6 +103,15 @@ describe('valfor', function () {
       .should.equal('19100101+1145');
     valfor.personalidnum('191001011145', valfor.NBR_DIGITS_10 | valfor.ADD_SEPARATOR)
       .should.equal('100101+1145');
+
+    valfor.personalidnum('191001011145', null, valfor.TYPE_PERSONAL_NUMBER)
+      .should.equal('191001011145');
+    valfor.personalidnum('191001611142', null, valfor.TYPE_COORDINATION_NUMBER)
+      .should.equal('191001611142');
+    valfor.personalidnum('191001611142', null, valfor.TYPE_PERSONAL_NUMBER)
+      .should.equal(false);
+    valfor.personalidnum('191001011145', null, valfor.TYPE_COORDINATION_NUMBER)
+    .should.equal(false);
 
     valfor.personalidnum('900101-5705', valfor.NBR_DIGITS_12)
       .should.equal(false);

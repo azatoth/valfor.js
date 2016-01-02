@@ -1,14 +1,17 @@
-var DEFAULT = 0,
-  NUMERICAL_FORMAT = 1,
-  INTERNATIONAL_FORMAT = 2,
-  NATIONAL_FORMAT = 4,
-  NBR_DIGITS_10 = 8,
-  NBR_DIGITS_12 = 16,
-  ADD_SEPARATOR = 32,
-  SPACE_SEPARATOR = 64,
-  DASH_SEPARATOR = 128,
-  LOWERCASE = 256,
-  UPPERCASE = 512;
+var DEFAULT = 0x0000,
+  NUMERICAL_FORMAT = 0x0001,
+  INTERNATIONAL_FORMAT = 0x0002,
+  NATIONAL_FORMAT = 0x0004,
+  NBR_DIGITS_10 = 0x0008,
+  NBR_DIGITS_12 = 0x0010,
+  ADD_SEPARATOR = 0x0020,
+  SPACE_SEPARATOR = 0x0040,
+  DASH_SEPARATOR = 0x0080,
+  LOWERCASE = 0x0100,
+  UPPERCASE = 0x0200,
+  TYPE_PERSONAL_NUMBER = 0x0400,
+  TYPE_COORDINATION_NUMBER = 0x0800;
+
 /**
  * Kontrollerar om ett svenskt mobiltelefonnummer är giltigt i enlighet med
  * Post- & Telestyrelsens nummerplan för mobiltelefonitjänster.
@@ -25,119 +28,150 @@ var DEFAULT = 0,
  * @returns {String|Boolean} Mobiltelefonnummer eller 'false'
  */
 function cellphonenum(number, format) {
-    var n = number.replace(/\D/g, ''),
-      prefix = [70, 72, 73, 76, 79];
-    for (var p in prefix) {
-      if (n.indexOf(prefix[p]) > -1 && n.substring(n.indexOf(prefix[p]), n.length)
-        .length === 9) {
-        if (format & NATIONAL_FORMAT) {
-          var fn = '0',
-            pdx = n.indexOf(prefix[p]);
-          for (var i = pdx; i <= pdx + 8; i++) {
-            fn += (i === pdx + 2 ? '-' : (i === pdx + 5 || i === pdx + 7 ? ' ' : '')) + n.substr(i, 1);
-          }
-          return fn;
+  var n = number.replace(/\D/g, ''),
+    prefix = [70, 72, 73, 76, 79];
+  for (var p in prefix) {
+    if (n.indexOf(prefix[p]) > -1 && n.substring(n.indexOf(prefix[p]), n.length)
+      .length === 9) {
+      if (format & NATIONAL_FORMAT) {
+        var fn = '0',
+          pdx = n.indexOf(prefix[p]);
+        for (var i = pdx; i <= pdx + 8; i++) {
+          fn += (i === pdx + 2 ? '-' : (i === pdx + 5 || i === pdx + 7 ? ' ' : '')) + n.substr(i, 1);
         }
-        return (format & INTERNATIONAL_FORMAT ? '+46' : '0') + n.substring(n.indexOf(prefix[p]), n.length);
+        return fn;
       }
+      return (format & INTERNATIONAL_FORMAT ? '+46' : '0') + n.substring(n.indexOf(prefix[p]), n.length);
     }
+  }
+  return false;
+}
+
+/**
+ * Kontrollerar om ett svenskt person- eller samordningsnummer är giltigt
+ * i enlighet med Folkbokföringslagen 1991:481 (18§), SKV 704 och SKV 707.
+ *
+ * För att retunera person- eller samordningsnumret i ett visst format,
+ * kan en andra valfri parameter anges. De format som stöds är:
+ *
+ *     ADD_SEPARATOR - Lägg till skiljetecken (-)
+ *     NBR_DIGITS_12 = 12 siffror (standard), ÅÅÅÅMMDDNNNN
+ *     NBR_DIGITS_10 = 10 siffror, ÅÅMMDDNNNN
+ *
+ * Typ kan vara följande:
+ *     TYPE_PERSONAL_NUMBER - vanligt personnummer
+ *     TYPE_COORDINATION_NUMBER - samordningnummer
+ *
+ * @param {String} number Person- eller samordningnummer
+ * @param {Int} format Önskat format, (ADD_SEPARATOR | (NBR_DIGITS_12,NBR_DIGITS_10))
+ * @param {Int} [type=TYPE_PERSONAL_NUMBER|TYPE_COORDINATION_NUMBER]
+ * @returns {String|Boolean} Person-/samordningnummer eller 'false'
+ */
+function personalidnum(number, format, type) {
+  type = typeof type !== 'undefined' ? type : TYPE_PERSONAL_NUMBER | TYPE_COORDINATION_NUMBER;
+  var n = number.replace(/\D/g, '');
+  if (!(n.length === 12 || n.length === 10)) {
     return false;
   }
-  /**
-   * Kontrollerar om ett svenskt person- eller samordningsnummer är giltigt
-   * i enlighet med Folkbokföringslagen 1991:481 (18§), SKV 704 och SKV 707.
-   *
-   * För att retunera person- eller samordningsnumret i ett visst format,
-   * kan en andra valfri parameter anges. De format som stöds är:
-   *
-   *     ADD_SEPARATOR - Lägg till skiljetecken (-)
-   *     NBR_DIGITS_12 = 12 siffror (standard), ÅÅÅÅMMDDNNNN
-   *     NBR_DIGITS_10 = 10 siffror, ÅÅMMDDNNNN
-   *
-   * @param {String} number Person- eller samordningnummer
-   * @param {Int} format Önskat format, (ADD_SEPARATOR | (NBR_DIGITS_12,NBR_DIGITS_10))
-   * @returns {String|Boolean} Person-/samordningnummer eller 'false'
-   */
 
-function personalidnum(number, format) {
-    var n = number.replace(/\D/g, '');
-    if (!(n.length === 12 || n.length === 10)) {
-      return false;
-    }
-
-    var nums = [
-        n.substr(0, (n.length === 10 ? 2 : 4)), // year
-        n.substr(-8, 2), // month
-        n.substr(-6, 2), // day
-        n.substr(-4, 3), // number
-        n.substr(-1, 1) // control number
-      ],
-      year = new Date()
-      .getFullYear();
-    if (nums[0].length === 2) {
-      var y = year.toString();
-      if (number.substr(-5, 1) === '+') {
-        nums[0] = parseInt(y.substr(0, 2), 10) - (parseInt(y.substr(-2), 10) >= parseInt(nums[0], 10) ? 1 : 2) + nums[0];
-      } else {
-        nums[0] = (parseInt(y.substr(-2), 10) < parseInt(nums[0], 10) ? parseInt(y.substr(0, 2), 10) - 1 + nums[0] : y.substr(0, 2) + nums[0]);
-      }
-    }
-    var ctrl = [parseInt(nums[0], 10), parseInt(nums[1], 10), parseInt(nums[2], 10)],
-      mdim = {
-        1: 31,
-        2: 29,
-        3: 31,
-        4: 30,
-        5: 31,
-        6: 30,
-        7: 31,
-        8: 31,
-        9: 30,
-        10: 31,
-        11: 30,
-        12: 31
-      },
-      lsum = 0,
-      lnum = nums.join('')
-      .substr(2),
-      cnum = nums.join(''),
-      onum, i, s;
-    if (ctrl[0] > year || ctrl[1] < 1 || ctrl[1] > 12 || !!(ctrl[2] < 1 || ctrl[2] > mdim[ctrl[1]]) && (ctrl[2] < 61 || ctrl[2] > mdim[ctrl[1]] + 60)) {
-      return false;
-    }
-    for (i = 0; i < lnum.length; i++) {
-      s = parseInt(lnum.substr(i, 1), 10) * (i % 2 === 0 ? 2 : 1);
-      lsum += (s > 9 ? parseInt(s.toString()
-        .substr(0, 1), 10) + parseInt(s.toString()
-        .substr(1, 1), 10) : s);
-    }
-    if (format & ADD_SEPARATOR) {
-      onum = (format & NBR_DIGITS_12 ? cnum.substr(0, 8) : cnum.substr(2, 6)) + (year - ctrl[0] >= 100 ? '+' : '-') + cnum.substr(-4);
+  var nums = [
+      n.substr(0, (n.length === 10 ? 2 : 4)), // year
+      n.substr(-8, 2), // month
+      n.substr(-6, 2), // day
+      n.substr(-4, 3), // number
+      n.substr(-1, 1) // control number
+    ],
+    year = new Date()
+    .getFullYear();
+  if (nums[0].length === 2) {
+    var y = year.toString();
+    if (number.substr(-5, 1) === '+') {
+      nums[0] = parseInt(y.substr(0, 2), 10) - (parseInt(y.substr(-2), 10) >= parseInt(nums[0], 10) ? 1 : 2) + nums[0];
     } else {
-      onum = (format & NBR_DIGITS_10 ? cnum.substr(2) : cnum);
+      nums[0] = (parseInt(y.substr(-2), 10) < parseInt(nums[0], 10) ? parseInt(y.substr(0, 2), 10) - 1 + nums[0] : y.substr(0, 2) + nums[0]);
     }
-    return (lsum % 10 !== 0 ? false : onum);
   }
-  /**
-   * Kontrollerar om ett svenskt organisationsnummer är giltigt i enlighet med
-   * Lagen om identitetsbeteckning för juridiska personer (1974:174) och SKV 709.
-   *
-   * För att retunera organisationsnumret i ett visst format, kan en andra
-   * valfri parameter anges. De format som stöds är:
-   *
-   *     ADD_SEPARATOR = Lägg till siljetecken (-)
-   *     NBR_DIGITS_12 = 12 siffror, ÅÅÅÅMMDDNNNN
-   *     NBR_DIGITS_10 = 10 siffror (standard), ÅÅMMDDNNNN
-   *
-   * @param {String} number Organisationsnumret som ska kontrolleras
-   * @param {Int} format (ADD_SEPARATOR| (NBR_DIGITS_10,NBR_DIGITS_12))
-   * @returns {String|Boolean} Returnerar personnumret eller 'false'
-   */
+  var ctrl = [parseInt(nums[0], 10), parseInt(nums[1], 10), parseInt(nums[2], 10)],
+    mdim = {
+      1: 31,
+      2: 29,
+      3: 31,
+      4: 30,
+      5: 31,
+      6: 30,
+      7: 31,
+      8: 31,
+      9: 30,
+      10: 31,
+      11: 30,
+      12: 31
+    },
+    lnum = nums.join('')
+    .substr(2),
+    cnum = nums.join(''),
+    onum;
+  if (~type & TYPE_PERSONAL_NUMBER && ctrl[2] <= 31) {
+    return false;
+  }
+  if (~type & TYPE_COORDINATION_NUMBER && ctrl[2] >= 60) {
+    return false;
+  }
 
+  if (ctrl[0] > year || ctrl[1] < 1 || ctrl[1] > 12 || !!(ctrl[2] < 1 || ctrl[2] > mdim[ctrl[1]]) && (ctrl[2] < 61 || ctrl[2] > mdim[ctrl[1]] + 60)) {
+    return false;
+  }
+
+  if (format & ADD_SEPARATOR) {
+    onum = (format & NBR_DIGITS_12 ? cnum.substr(0, 8) : cnum.substr(2, 6)) + (year - ctrl[0] >= 100 ? '+' : '-') + cnum.substr(-4);
+  } else {
+    onum = (format & NBR_DIGITS_10 ? cnum.substr(2) : cnum);
+  }
+
+  return is_luhn_valid(lnum) && onum;
+}
+
+function luhn_checksum(nbr) {
+  var
+    lookup = [0, 2, 4, 6, 8, 1, 3, 5, 7, 9],
+    len = nbr.length,
+    bit = 1,
+    sum = 0,
+    val;
+
+  while (len) {
+    val = parseInt(nbr.charAt(--len), 10);
+    sum += (bit ^= 1) ? lookup[val] : val;
+  }
+
+  return sum % 10;
+}
+
+function is_luhn_valid(nbr) {
+  return luhn_checksum(nbr) === 0;
+}
+
+function calculate_luhn(nbr) {
+  var sum = luhn_checksum(nbr + '0');
+  return sum === 0 ? 0 : 10 - sum;
+}
+
+/**
+ * Kontrollerar om ett svenskt organisationsnummer är giltigt i enlighet med
+ * Lagen om identitetsbeteckning för juridiska personer (1974:174) och SKV 709.
+ *
+ * För att retunera organisationsnumret i ett visst format, kan en andra
+ * valfri parameter anges. De format som stöds är:
+ *
+ *     ADD_SEPARATOR = Lägg till siljetecken (-)
+ *     NBR_DIGITS_12 = 12 siffror, ÅÅÅÅMMDDNNNN
+ *     NBR_DIGITS_10 = 10 siffror (standard), ÅÅMMDDNNNN
+ *
+ * @param {String} number Organisationsnumret som ska kontrolleras
+ * @param {Int} format (ADD_SEPARATOR| (NBR_DIGITS_10,NBR_DIGITS_12))
+ * @returns {String|Boolean} Returnerar personnumret eller 'false'
+ */
 function orgidnum(number, format) {
-    var n = number.replace(/\D/g, ''),
-      lsum = 0,
-      i, s;
+    var n = number.replace(/\D/g, '');
 
     // 16NNNNNNNNNN används för lagring inom skatteverket
     if (n.length === 12 && parseInt(n.substr(0, 1)) !== 16) {
@@ -150,13 +184,8 @@ function orgidnum(number, format) {
     if (n.length !== 10 || parseInt(n.substr(2, 1)) < 2) {
       return false;
     }
-    for (i = 0; i < n.length; i++) {
-      s = parseInt(n.substr(i, 1), 10) * (i % 2 === 0 ? 2 : 1);
-      lsum += (s > 9 ? parseInt(s.toString()
-        .substr(0, 1), 10) + parseInt(s.toString()
-        .substr(1, 1), 10) : s);
-    }
-    return (lsum % 10 !== 0 ? false : (format & NBR_DIGITS_12 ? '16' : '') + (format & ADD_SEPARATOR ? n.substr(0, 6) + '-' + n.substr(-4) : n));
+
+    return is_luhn_valid(n) && (format & NBR_DIGITS_12 ? '16' : '') + (format & ADD_SEPARATOR ? n.substr(0, 6) + '-' + n.substr(-4) : n);
   }
   /**
    * Kontrollerar om ett bankkortsnummer är giltigt i enlighet med ISO/IEC
@@ -176,17 +205,11 @@ function orgidnum(number, format) {
 
 function bankcardnum(number, format) {
   var n = number.replace(/\D/g, ''),
-    lsum = 0,
-    i, s, nsep, onum = '';
+    nsep, onum = '';
   if (n.length < 11 || n.length > 21) {
     return false;
   }
-  for (i = 0; i < n.length; i++) {
-    s = parseInt(n.substr(i, 1), 10) * (i % 2 === 0 ? 2 : 1);
-    lsum += (s > 9 ? parseInt(s.toString()
-      .substr(0, 1), 10) + parseInt(s.toString()
-      .substr(1, 1), 10) : s);
-  }
+
   if (format & SPACE_SEPARATOR || format & DASH_SEPARATOR) {
     nsep = (format & SPACE_SEPARATOR ? ' ' : '-');
     while (n.length > 0) {
@@ -197,7 +220,7 @@ function bankcardnum(number, format) {
   } else {
     onum = n;
   }
-  return (lsum % 10 !== 0 ? false : onum);
+  return is_luhn_valid(n) && onum;
 }
 
 /**
@@ -318,6 +341,7 @@ function testText(text, type, format, min, max) {
 module.exports = {
   cellphonenum: cellphonenum,
   personalidnum: personalidnum,
+  calculate_luhn: calculate_luhn,
   orgidnum: orgidnum,
   bankcardnum: bankcardnum,
   zipcode: zipcode,
@@ -333,5 +357,7 @@ module.exports = {
   SPACE_SEPARATOR: SPACE_SEPARATOR,
   DASH_SEPARATOR: DASH_SEPARATOR,
   LOWERCASE: LOWERCASE,
-  UPPERCASE: UPPERCASE
+  UPPERCASE: UPPERCASE,
+  TYPE_PERSONAL_NUMBER: TYPE_PERSONAL_NUMBER,
+  TYPE_COORDINATION_NUMBER: TYPE_COORDINATION_NUMBER
 };
