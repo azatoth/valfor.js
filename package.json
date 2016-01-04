@@ -1,5 +1,5 @@
 {
-  "name": "valfor.js",
+  "name": "valfor",
   "version": "0.9.1",
   "description": "Valfor.js är ett bibliotek för att validera och formatera formulärsdata",
   "main": "valfor.js",
