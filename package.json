@@ -2,13 +2,13 @@
   "name": "valfor",
   "version": "0.9.1",
   "description": "Valfor.js är ett bibliotek för att validera och formatera formulärsdata",
-  "main": "valfor.js",
+  "main": "src/valfor.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jop-io/valfor.js.git"
+    "url": "git+https://github.com/azatoth/valfor.js.git"
   },
   "author": "Jonas Persson",
   "contributors": [
@@ -16,9 +16,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jop-io/valfor.js/issues"
+    "url": "https://github.com/azatoth/valfor.js/issues"
   },
-  "homepage": "https://github.com/jop-io/valfor.js#readme",
+  "homepage": "https://github.com/azatoth/valfor.js#readme",
   "dependencies": {},
   "devDependencies": {
     "browserify": "^12.0.1",
