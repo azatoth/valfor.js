@@ -1,6 +1,8 @@
 {
   "name": "valfor",
-  "main": "valfor.min.js",
+  "main": [
+    "dist/valfor.min.js"
+  ],
   "version": "0.9.1",
   "homepage": "https://github.com/azatoth/valfor.js",
   "authors": [
