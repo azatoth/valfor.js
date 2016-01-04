@@ -1,8 +1,8 @@
 {
-  "name": "valfor.js",
+  "name": "valfor",
   "main": "valfor.min.js",
   "version": "0.9.1",
-  "homepage": "https://github.com/jop-io/valfor.js",
+  "homepage": "https://github.com/azatoth/valfor.js",
   "authors": [
     "Jonas Persson",
     "Carl Fürstenberg <azatoth@gmail.com>"
