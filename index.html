@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Valfor.js by azatoth</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Valfor.js</h1>
+        <h2>Bibliotek för att validera och formatera formulärdata. Biblioteket är särskilt behjälpligt för att validera kundforumlär, tex. kassor på e-handelssidor.</h2>
+        <a href="https://github.com/azatoth/valfor.js" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="valforjs-v09" class="anchor" href="#valforjs-v09" aria-hidden="true"><span class="octicon octicon-link"></span></a>valfor.js (v0.9)</h1>
+
+<p>Valfor.js är ett bibliotek för att validera och formatera formulärsdata. Biblioteket är särskilt behjälpligt för att hantera forumlär där kunder anger data i en köpprocess, tex. i kassan på en e-handelssida.</p>
+
+<h2>
+<a id="användningsområden" class="anchor" href="#anv%C3%A4ndningsomr%C3%A5den" aria-hidden="true"><span class="octicon octicon-link"></span></a>Användningsområden</h2>
+
+<p>Valfor.js kan användas i två syften; dels för att validera att forumlärsdata är giltig (korrekt) samt för att formatera datan i ett standardenligt format. Valfor.js har stöd för att validera följande typer av inmatad data:</p>
+
+<ul>
+<li><a href="#mobiltelefonnummer">Mobiltelefonnummer</a></li>
+<li><a href="#personnummer">Personnummer</a></li>
+<li><a href="#samordningsnummer">Samordningsnummer</a></li>
+<li><a href="#organisationsnummer">Organisationsnummer</a></li>
+<li><a href="#postnummer">Postnummer</a></li>
+<li><a href="#bankkortsnummer">Bankkortsnummer</a></li>
+<li><a href="#e-postadress">E-postadresser</a></li>
+</ul>
+
+<p>Valfor.js kan också användas för att validera och formatera godtyckliga textsträngar, vilket är användbart för data som inte är standardiserad, tex. namn och adresser.</p>
+
+<h1>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h1>
+
+<h2>
+<a id="webläsare" class="anchor" href="#webl%C3%A4sare" aria-hidden="true"><span class="octicon octicon-link"></span></a>Webläsare</h2>
+
+<p>Du kan installera genom att använda bower:</p>
+
+<div class="highlight highlight-source-shell"><pre>$ bower install valfor</pre></div>
+
+<p>Sedan är det bara att inkludera:</p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>valfor.min.js<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<h2>
+<a id="nodejs" class="anchor" href="#nodejs" aria-hidden="true"><span class="octicon octicon-link"></span></a>Node.js</h2>
+
+<div class="highlight highlight-source-shell"><pre>$ npm install --save valfor</pre></div>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> valfor <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>valfor<span class="pl-pds">'</span></span>);</pre></div>
+
+<h1>
+<a id="exempel-på-använding" class="anchor" href="#exempel-p%C3%A5-anv%C3%A4nding" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exempel på använding</h1>
+
+<p>Samtliga valideringsfunktioner returnerar inmatad data (med formatering) om datan valideras som giltig. I fall datan valideras som ogiltig returneras <em>false</em>.</p>
+
+<h3>
+<a id="mobiltelefonnummer" class="anchor" href="#mobiltelefonnummer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mobiltelefonnummer</h3>
+
+<p>Mobiltelefonnummer valideras enligt <a href="https://www.pts.se/sv/Bransch/Telefoni/Nummerfragor/Telefoninummerplanen/Telefoninummerplanens-disposition/">Post- &amp; Telestyrelsens nummerplan</a> för mobiltelefonitjänster. De svenska mobiltelefonitjänsterna inleds med prefixen <em>70</em>, <em>72</em>, <em>73</em>, <em>76</em> och <em>79</em>.</p>
+
+<p>Mobiltelefonnummer vilka valideras som giltiga returneras formaterade. För att välja format på datan som returneras anges en sekundär parameter med följande värden:</p>
+
+<ul>
+<li>
+<code>valfor.NUMERICAL_FORMAT</code> Numeriskt (standard), <code>NNNNNNNNNN</code>
+</li>
+<li>
+<code>valfor.INTERNATIONAL_FORMAT</code> Internationellt E.164, <code>+46NNNNNNNNN</code>
+</li>
+<li>
+<code>valfor.NATIONAL_FORMAT</code> Nationellt, <code>NNN-NNN NN NN</code>
+</li>
+</ul>
+
+<p><strong>Numerisk formatering</strong></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">valfor</span>.<span class="pl-en">cellphonenum</span>(<span class="pl-s"><span class="pl-pds">"</span>0702112233<span class="pl-pds">"</span></span>); <span class="pl-c">// returnerar '0702112233'</span>
+<span class="pl-smi">valfor</span>.<span class="pl-en">cellphonenum</span>(<span class="pl-s"><span class="pl-pds">"</span>+460702112233<span class="pl-pds">"</span></span>); <span class="pl-c">// returnerar '0702112233'</span>
+<span class="pl-smi">valfor</span>.<span class="pl-en">cellphonenum</span>(<span class="pl-s"><span class="pl-pds">"</span>070-211 22 33<span class="pl-pds">"</span></span>); <span class="pl-c">// returnerar '0702112233'</span></pre></div>
+
+<p><strong>Internationell formatering</strong></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">valfor</span>.<span class="pl-en">cellphonenum</span>(<span class="pl-s"><span class="pl-pds">"</span>0702112233<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">INTERNATIONAL_FORMAT</span>); <span class="pl-c">// returnerar '+46702112233'</span>
+<span class="pl-smi">valfor</span>.<span class="pl-en">cellphonenum</span>(<span class="pl-s"><span class="pl-pds">"</span>+460702112233<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">INTERNATIONAL_FORMAT</span>); <span class="pl-c">// returnerar '+46702112233'</span>
+<span class="pl-smi">valfor</span>.<span class="pl-en">cellphonenum</span>(<span class="pl-s"><span class="pl-pds">"</span>070-211 22 33<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">INTERNATIONAL_FORMAT</span>); <span class="pl-c">// returnerar '+46702112233'</span></pre></div>
+
+<p><strong>Nationell formatering</strong></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">valfor</span>.<span class="pl-en">cellphonenum</span>(<span class="pl-s"><span class="pl-pds">"</span>0702112233<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NATIONAL_FORMAT</span>); <span class="pl-c">// returnerar '070-211 22 33'</span>
+<span class="pl-smi">valfor</span>.<span class="pl-en">cellphonenum</span>(<span class="pl-s"><span class="pl-pds">"</span>+460702112233<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NATIONAL_FORMAT</span>); <span class="pl-c">// returnerar '070-211 22 33'</span>
+<span class="pl-smi">valfor</span>.<span class="pl-en">cellphonenum</span>(<span class="pl-s"><span class="pl-pds">"</span>070-211 22 33<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NATIONAL_FORMAT</span>); <span class="pl-c">// returnerar '070-211 22 33'</span></pre></div>
+
+<p><strong>Ej giltiga telefonnummer (returnerar false)</strong></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">valfor</span>.<span class="pl-en">cellphonenum</span>(<span class="pl-s"><span class="pl-pds">"</span>0710112233<span class="pl-pds">"</span></span>); <span class="pl-c">// returnerar false</span>
+<span class="pl-smi">valfor</span>.<span class="pl-en">cellphonenum</span>(<span class="pl-s"><span class="pl-pds">"</span>07021122<span class="pl-pds">"</span></span>); <span class="pl-c">// returnerar false</span>
+<span class="pl-smi">valfor</span>.<span class="pl-en">cellphonenum</span>(<span class="pl-s"><span class="pl-pds">"</span>0812345678<span class="pl-pds">"</span></span>); <span class="pl-c">// returnerar false</span></pre></div>
+
+<h3>
+<a id="personnummer" class="anchor" href="#personnummer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Personnummer</h3>
+
+<p>Personnummer valideras i enlighet med <a href="https://www.riksdagen.se/sv/Dokument-Lagar/Lagar/Svenskforfattningssamling/sfs_sfs-1991-481/">Folkbokföringslagen 1991:481, § 18 </a> och <a href="http://www.skatteverket.se/privat/sjalvservice/blanketterbroschyrer/broschyrer/info/704.4.39f16f103821c58f680007993.html">SKV 704</a>. Notera att personnummer med ett angivet födelseår större än det nuvarande kalenderåret valideras som ogiltiga.</p>
+
+<p>Personnummer vilka valideras som giltiga returneras formaterade. För att välja format på datan som returneras anges en sekundär parameter som kan ha en kombination ab följande värden:</p>
+
+<ul>
+<li>
+<code>valfor.ADD_SEPARATOR</code>, inkludera skiljetecken</li>
+<li>
+<code>valfor.NBR_DIGITS_10</code>, 10 siffror</li>
+<li>
+<code>valfor.NBR_DIGITS_12</code>, 12 siffror (standard)</li>
+</ul>
+
+<p>&amp;ast;<em>Skiljetecken är antingen "-" eller "+" beroende på om födelseåret inträffade för +100 år sedan.</em></p>
+
+<p><strong>Formatering på personnummer vilka valideras som giltiga</strong></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">valfor</span>.<span class="pl-en">personalidnum</span>(<span class="pl-s"><span class="pl-pds">"</span>900101-5701<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NBR_DIGITS_12</span>); <span class="pl-c">// returnerar '199001015701'</span>
+<span class="pl-smi">valfor</span>.<span class="pl-en">personalidnum</span>(<span class="pl-s"><span class="pl-pds">"</span>900101-5701<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NBR_DIGITS_12</span> <span class="pl-k">|</span> <span class="pl-smi">valfor</span>.<span class="pl-c1">ADD_SEPARATOR</span>); <span class="pl-c">// returnerar '19900101-5701'</span>
+<span class="pl-smi">valfor</span>.<span class="pl-en">personalidnum</span>(<span class="pl-s"><span class="pl-pds">"</span>900101-5701<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NBR_DIGITS_10</span>); <span class="pl-c">// returnerar '9001015701'</span>
+<span class="pl-smi">valfor</span>.<span class="pl-en">personalidnum</span>(<span class="pl-s"><span class="pl-pds">"</span>900101-5701<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NBR_DIGITS_10</span> <span class="pl-k">|</span> <span class="pl-smi">valfor</span>.<span class="pl-c1">ADD_SEPARATOR</span>); <span class="pl-c">// returnerar '900101-5701'</span>
+<span class="pl-smi">valfor</span>.<span class="pl-en">personalidnum</span>(<span class="pl-s"><span class="pl-pds">"</span>100101+1145<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NBR_DIGITS_12</span>); <span class="pl-c">// returnerar '191001011145'</span>
+<span class="pl-smi">valfor</span>.<span class="pl-en">personalidnum</span>(<span class="pl-s"><span class="pl-pds">"</span>191001011145<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NBR_DIGITS_12</span> <span class="pl-k">|</span> <span class="pl-smi">valfor</span>.<span class="pl-c1">ADD_SEPARATOR</span>); <span class="pl-c">// returnerar '19100101+1145'</span>
+<span class="pl-smi">valfor</span>.<span class="pl-en">personalidnum</span>(<span class="pl-s"><span class="pl-pds">"</span>191001011145<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NBR_DIGITS_10</span> <span class="pl-k">|</span> <span class="pl-smi">valfor</span>.<span class="pl-c1">ADD_SEPARATOR</span>); <span class="pl-c">// returnerar '100101+1145'</span></pre></div>
+
+<p><strong>Ej giltiga personnummer (returnerar false)</strong></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">valfor</span>.<span class="pl-en">personalidnum</span>(<span class="pl-s"><span class="pl-pds">"</span>900101-5705<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NBR_DIGITS_12</span>); <span class="pl-c">// returnerar false (felaktig kontrollsiffra)</span>
+<span class="pl-smi">valfor</span>.<span class="pl-en">personalidnum</span>(<span class="pl-s"><span class="pl-pds">"</span>20900101-5701<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NBR_DIGITS_12</span> <span class="pl-k">|</span> <span class="pl-smi">valfor</span>.<span class="pl-c1">ADD_SEPARATOR</span>); <span class="pl-c">// returnerar false (ogiltig födelseår)</span>
+<span class="pl-smi">valfor</span>.<span class="pl-en">personalidnum</span>(<span class="pl-s"><span class="pl-pds">"</span>901301-5701<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NBR_DIGITS_10</span>); <span class="pl-c">// returnerar false (ogiltigt födelsemånad)</span>
+<span class="pl-smi">valfor</span>.<span class="pl-en">personalidnum</span>(<span class="pl-s"><span class="pl-pds">"</span>900132-5701<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NBR_DIGITS_10</span> <span class="pl-k">|</span> <span class="pl-smi">valfor</span>.<span class="pl-c1">ADD_SEPARATOR</span>); <span class="pl-c">// returnerar false (ogiltigt födelsedag)</span></pre></div>
+
+<h3>
+<a id="samordningsnummer" class="anchor" href="#samordningsnummer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Samordningsnummer</h3>
+
+<p>Samordningsnummer valideras i enlighet med <a href="https://www.riksdagen.se/sv/Dokument-Lagar/Lagar/Svenskforfattningssamling/sfs_sfs-1991-481/">Folkbokföringslagen 1991:481, § 18 </a> och <a href="http://www.skatteverket.se/privat/sjalvservice/blanketterbroschyrer/broschyrer/info/707.4.39f16f103821c58f680007997.html">SKV 707</a>. Notera att samordningsnummer med ett angivet födelseår större än det nuvarande kalenderåret valideras som ogiltiga.</p>
+
+<h3>
+<a id="organisationsnummer" class="anchor" href="#organisationsnummer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Organisationsnummer</h3>
+
+<p>Organisationsnummer valideras i enlighet med <a href="https://www.riksdagen.se/sv/Dokument-Lagar/Lagar/Svenskforfattningssamling/sfs_sfs-1974-174/">Lagen om identitetsbeteckning för juridiska personer (1974:174)</a> och <a href="https://www.skatteverket.se/foretagorganisationer/sjalvservice/blanketterbroschyrer/broschyrer/info/709.4.39f16f103821c58f680008001.html">SKV 709</a>.</p>
+
+<p>Organisationsnummer vilka valideras som giltiga returneras formaterade. För att välja format på datan som returneras anges en sekundär parameter med följande värden:</p>
+
+<ul>
+<li>
+<code>valfor.ADD_SEPARATOR</code>, inkludera skiljetecken</li>
+<li>
+<code>valfor.NBR_DIGITS_10</code>, 10 siffror (standard)</li>
+<li>
+<code>valfor.NBR_DIGITS_12</code>, 12 siffror</li>
+</ul>
+
+<div class="highlight highlight-source-js"><pre>    <span class="pl-smi">valfor</span>.<span class="pl-en">orgidnum</span>(<span class="pl-s"><span class="pl-pds">'</span>555555-5555<span class="pl-pds">'</span></span>); <span class="pl-c">// returnerar '5555555555'</span>
+    <span class="pl-smi">valfor</span>.<span class="pl-en">orgidnum</span>(<span class="pl-s"><span class="pl-pds">'</span>555555-5555<span class="pl-pds">'</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">ADD_SEPARATOR</span>); <span class="pl-c">// returnerar '555555-5555'</span>
+
+    <span class="pl-smi">valfor</span>.<span class="pl-en">orgidnum</span>(<span class="pl-s"><span class="pl-pds">'</span>555555-5555<span class="pl-pds">'</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NBR_DIGITS_10</span>); <span class="pl-c">// returnerar '5555555555'</span>
+    <span class="pl-smi">valfor</span>.<span class="pl-en">orgidnum</span>(<span class="pl-s"><span class="pl-pds">'</span>555555-5555<span class="pl-pds">'</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NBR_DIGITS_10</span> <span class="pl-k">|</span> <span class="pl-smi">valfor</span>.<span class="pl-c1">ADD_SEPARATOR</span>); <span class="pl-c">// returnerar '555555-5555'</span>
+
+    <span class="pl-smi">valfor</span>.<span class="pl-en">orgidnum</span>(<span class="pl-s"><span class="pl-pds">'</span>555555-5555<span class="pl-pds">'</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NBR_DIGITS_12</span>); <span class="pl-c">// returnerar '165555555555'</span>
+    <span class="pl-smi">valfor</span>.<span class="pl-en">orgidnum</span>(<span class="pl-s"><span class="pl-pds">'</span>555555-5555<span class="pl-pds">'</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NBR_DIGITS_12</span> <span class="pl-k">|</span> <span class="pl-smi">valfor</span>.<span class="pl-c1">ADD_SEPARATOR</span>); <span class="pl-c">// returnerar '16555555-5555'</span>
+
+    <span class="pl-smi">valfor</span>.<span class="pl-en">orgidnum</span>(<span class="pl-s"><span class="pl-pds">'</span>0710112233<span class="pl-pds">'</span></span>); <span class="pl-c">// returnerar false</span>
+    <span class="pl-smi">valfor</span>.<span class="pl-en">orgidnum</span>(<span class="pl-s"><span class="pl-pds">'</span>07021122<span class="pl-pds">'</span></span>); <span class="pl-c">// returnerar false</span>
+    <span class="pl-smi">valfor</span>.<span class="pl-en">orgidnum</span>(<span class="pl-s"><span class="pl-pds">'</span>0812345678<span class="pl-pds">'</span></span>); <span class="pl-c">// returnerar false</span></pre></div>
+
+<h3>
+<a id="postnummer" class="anchor" href="#postnummer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Postnummer</h3>
+
+<p>Postnummer valideras i enlighet med <a href="http://www.sis.se/sociologi-service-f%C3%B6retagsorganisation-och-ledning-och-administration/postala-tj%C3%A4nster/ss-6134012011">SS 613401:2011</a> och det <a href="http://www.postnummerservice.se/information/faq/adresser-och-postnummer/hur-aer-postnummer-uppbyggda-i-sverige">Svenska Postnummersystemet</a>.</p>
+
+<p>Postnummer vilka valideras som giltiga returneras formaterade. För att välja format på datan som returneras anges en sekundär parameter med värde 1 till 3. De format som stöds är:</p>
+
+<ul>
+<li>
+<code>valfor.NUMERICAL_FORMAT</code> Numeriskt (standard), <code>NNNNN</code>
+</li>
+<li>
+<code>valfor.NATIONAL_FORMAT</code> Nationellt, <code>NNN NN</code>
+</li>
+<li>
+<code>valfor.INTERNATIONAL_FORMAT</code> <code>SE-NNN NN</code>
+</li>
+</ul>
+
+<p><strong>Formatering av postnummer vilka valideras som giltiga</strong></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">valfor</span>.<span class="pl-en">zipcode</span>(<span class="pl-s"><span class="pl-pds">"</span>54100<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NUMERICAL_FORMAT</span>); <span class="pl-c">// returnerar '54100'</span>
+<span class="pl-smi">valfor</span>.<span class="pl-en">zipcode</span>(<span class="pl-s"><span class="pl-pds">"</span>54100<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NATIONAL_FORMAT</span>); <span class="pl-c">// returnerar '541 00'</span>
+<span class="pl-smi">valfor</span>.<span class="pl-en">zipcode</span>(<span class="pl-s"><span class="pl-pds">"</span>54100<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">INTERNATIONAL_FORMAT</span>); <span class="pl-c">// returnerar 'SE-541 00'</span></pre></div>
+
+<p><strong>Ej giltiga postnummer (returnerar false)</strong></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">valfor</span>.<span class="pl-en">zipcode</span>(<span class="pl-s"><span class="pl-pds">"</span>00001<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NUMERICAL_FORMAT</span>); <span class="pl-c">// returnerar false (ogiltigt värde)</span>
+<span class="pl-smi">valfor</span>.<span class="pl-en">zipcode</span>(<span class="pl-s"><span class="pl-pds">"</span>49152<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">NATIONAL_FORMAT</span>); <span class="pl-c">// returnerar false (ogiltig nummerserie)</span>
+<span class="pl-smi">valfor</span>.<span class="pl-en">zipcode</span>(<span class="pl-s"><span class="pl-pds">"</span>123<span class="pl-pds">"</span></span>, <span class="pl-smi">valfor</span>.<span class="pl-c1">INTERNATIONAL_FORMAT</span>); <span class="pl-c">// returnerar false (ogiltigt längd)</span></pre></div>
+
+<h3>
+<a id="bankkortsnummer" class="anchor" href="#bankkortsnummer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bankkortsnummer</h3>
+
+<p>Kontrollerar om ett bankkortsnummer är giltigt i enlighet med ISO/IEC 7812-1:2015.</p>
+
+<h3>
+<a id="e-postadress" class="anchor" href="#e-postadress" aria-hidden="true"><span class="octicon octicon-link"></span></a>E-postadress</h3>
+
+<p>asd</p>
+
+<h3>
+<a id="text" class="anchor" href="#text" aria-hidden="true"><span class="octicon octicon-link"></span></a>Text</h3>
+
+<p>asd</p>
+
+<h2>
+<a id="licens" class="anchor" href="#licens" aria-hidden="true"><span class="octicon octicon-link"></span></a>Licens</h2>
+
+<p>Valfor.js omfattas av licensformen <a href="https://opensource.org/licenses/MIT" title="The MIT License">MIT</a>. Varsågod!</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/azatoth/valfor.js/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/azatoth/valfor.js/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/azatoth/valfor.js"></a> is maintained by <a href="https://github.com/azatoth">azatoth</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
