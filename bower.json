@@ -3,7 +3,7 @@
   "main": [
     "dist/valfor.min.js"
   ],
-  "version": "0.9.3",
+  "version": "0.9.4",
   "homepage": "https://github.com/azatoth/valfor.js",
   "authors": [
     "Jonas Persson",
