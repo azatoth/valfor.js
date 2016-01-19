@@ -77,6 +77,8 @@ describe('valfor', function () {
       .should.equal(false);
     valfor.cellphonenum('0812345678')
       .should.equal(false);
+    valfor.cellphonenum(null)
+      .should.equal(false);
     });
 
   it('should calculate correct control number', function(){
@@ -121,6 +123,9 @@ describe('valfor', function () {
       .should.equal(false);
     valfor.personalidnum('900132-5701', valfor.NBR_DIGITS_10 | valfor.ADD_SEPARATOR)
       .should.equal(false);
+
+      valfor.personalidnum(null)
+      .should.equal(false);
   });
 
   it('should process organisation numbers', function () {
@@ -146,6 +151,9 @@ describe('valfor', function () {
     valfor.orgidnum('0812345678')
       .should.equal(false);
 
+    valfor.orgidnum(null)
+      .should.equal(false);
+
   });
 
   it('should process bank card numbers');
@@ -163,6 +171,9 @@ describe('valfor', function () {
     valfor.zipcode('49152', valfor.NATIONAL_FORMAT)
       .should.equal(false);
     valfor.zipcode('123', valfor.INTERNATIONAL_FORMAT)
+      .should.equal(false);
+
+    valfor.zipcode(null)
       .should.equal(false);
   });
 

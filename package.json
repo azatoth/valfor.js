@@ -1,6 +1,6 @@
 {
   "name": "valfor",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "description": "Valfor.js är ett bibliotek för att validera och formatera formulärsdata",
   "main": "src/valfor.js",
   "scripts": {

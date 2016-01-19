@@ -28,6 +28,9 @@ var DEFAULT = 0x0000,
  * @returns {String|Boolean} Mobiltelefonnummer eller 'false'
  */
 function cellphonenum(number, format) {
+  if (typeof number !== 'string') {
+    return false;
+  }
   var n = number.replace(/\D/g, ''),
     prefix = [70, 72, 73, 76, 79];
   for (var p in prefix) {
@@ -68,6 +71,9 @@ function cellphonenum(number, format) {
  * @returns {String|Boolean} Person-/samordningnummer eller 'false'
  */
 function personalidnum(number, format, type) {
+  if (typeof number !== 'string') {
+    return false;
+  }
   type = typeof type !== 'undefined' ? type : TYPE_PERSONAL_NUMBER | TYPE_COORDINATION_NUMBER;
   var n = number.replace(/\D/g, '');
   if (!(n.length === 12 || n.length === 10)) {
@@ -171,6 +177,9 @@ function calculate_luhn(nbr) {
  * @returns {String|Boolean} Returnerar personnumret eller 'false'
  */
 function orgidnum(number, format) {
+  if (typeof number !== 'string') {
+    return false;
+  }
     var n = number.replace(/\D/g, '');
 
     // 16NNNNNNNNNN används för lagring inom skatteverket
@@ -204,6 +213,9 @@ function orgidnum(number, format) {
    */
 
 function bankcardnum(number, format) {
+  if (typeof number !== 'string') {
+    return false;
+  }
   var n = number.replace(/\D/g, ''),
     nsep, onum = '';
   if (n.length < 11 || n.length > 21) {
@@ -239,6 +251,9 @@ function bankcardnum(number, format) {
  * @returns {String|Boolean} Postnumret eller 'false'
  */
 function zipcode(number, format) {
+  if (typeof number !== 'string') {
+    return false;
+  }
     var n = number.replace(/\D/g, ''),
       pfx = ['32', '48', '49', '99'],
       pn = parseInt(n, 10);
@@ -264,6 +279,9 @@ function zipcode(number, format) {
    */
 
 function testEmail(email, format) {
+  if (typeof email !== 'string') {
+    return false;
+  }
     var e = !!(/\S+@\S+\.\S+/.test(email) && email.indexOf('@') === email.lastIndexOf('@') && email.length < 255);
     email = (format & UPPERCASE ? email.toUpperCase() : (format & LOWERCASE ? email.toLowerCase() : email))
       .replace(/^\s+|\s+$/gm, '');
@@ -296,6 +314,9 @@ function testEmail(email, format) {
    */
 
 function testText(text, type, format, min, max) {
+  if (typeof text !== 'string') {
+    return false;
+  }
   type = type.toUpperCase(), min = (min > 0 ? min : 0), max = (max > 0 ? max : text.length);
   if (text.length < min || text.lenght > max) {
     return false;
